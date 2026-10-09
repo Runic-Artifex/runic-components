@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "workspace",
+  "title": "Workspace",
+  "description": "Runic application chrome for frameless WebViews.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/workspace.tsx",
+      "content": "\"use client\";\nimport { useRef, useState, type ReactNode } from \"react\";\nimport { cn } from \"@/lib/utils\";\nexport function Workspace({\n  sidebar,\n  children,\n  sidebarLabel = \"Sidebar width\",\n  defaultWidth = 220,\n  minWidth = 160,\n  maxWidth = 360,\n  collapsed = false,\n  className,\n}: {\n  sidebar: ReactNode;\n  children: ReactNode;\n  sidebarLabel?: string;\n  defaultWidth?: number;\n  minWidth?: number;\n  maxWidth?: number;\n  collapsed?: boolean;\n  className?: string;\n}) {\n  const clamp = (n: number) => Math.min(maxWidth, Math.max(minWidth, n));\n  const [width, setWidth] = useState(clamp(defaultWidth));\n  const start = useRef<{ x: number; width: number } | null>(null);\n  return (\n    <div className={cn(\"flex min-h-0 flex-1 overflow-hidden\", className)}>\n      {!collapsed && (\n        <>\n          <aside\n            style={{ width }}\n            className=\"shrink-0 overflow-auto bg-muted/15\"\n          >\n            {sidebar}\n          </aside>\n          <div\n            role=\"separator\"\n            aria-label={sidebarLabel}\n            aria-orientation=\"vertical\"\n            aria-valuemin={minWidth}\n            aria-valuemax={maxWidth}\n            aria-valuenow={width}\n            tabIndex={0}\n            className=\"relative z-10 w-1 shrink-0 cursor-col-resize touch-none bg-border outline-none before:absolute before:inset-y-0 before:-left-1 before:w-3 hover:bg-primary focus-visible:bg-primary\"\n            onPointerDown={(e) => {\n              if (e.button !== 0) return;\n              e.currentTarget.setPointerCapture(e.pointerId);\n              start.current = { x: e.clientX, width };\n            }}\n            onPointerMove={(e) => {\n              if (start.current)\n                setWidth(\n                  clamp(start.current.width + e.clientX - start.current.x),\n                );\n            }}\n            onPointerUp={(e) => {\n              start.current = null;\n              if (e.currentTarget.hasPointerCapture(e.pointerId))\n                e.currentTarget.releasePointerCapture(e.pointerId);\n            }}\n            onPointerCancel={() => {\n              start.current = null;\n            }}\n            onLostPointerCapture={() => {\n              start.current = null;\n            }}\n            onDoubleClick={() => setWidth(clamp(defaultWidth))}\n            onKeyDown={(e) => {\n              if ([\"ArrowLeft\", \"ArrowRight\", \"Home\", \"End\"].includes(e.key)) {\n                e.preventDefault();\n                setWidth((w) =>\n                  e.key === \"Home\"\n                    ? minWidth\n                    : e.key === \"End\"\n                      ? maxWidth\n                      : clamp(\n                          w +\n                            (e.key === \"ArrowRight\" ? 1 : -1) *\n                              (e.shiftKey ? 32 : 8),\n                        ),\n                );\n              }\n            }}\n          />\n        </>\n      )}\n      <div className=\"flex min-w-0 flex-1 flex-col\">{children}</div>\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "@components/runic/workspace.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

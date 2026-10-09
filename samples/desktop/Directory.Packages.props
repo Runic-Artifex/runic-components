@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="../../../runic-sdk/Directory.Packages.props" />
+</Project>

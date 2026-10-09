@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RunicBridgeCompositionType>RunicComponents.Desktop.RunicBridgeComposition</RunicBridgeCompositionType>
+    <RunicBridgeFrontendDir>$(MSBuildProjectDirectory)/../..</RunicBridgeFrontendDir>
+    <RunicBridgeTypescriptDir>$(MSBuildProjectDirectory)/../../src/generated</RunicBridgeTypescriptDir>
+    <RunicBridgeBuildFrontend>false</RunicBridgeBuildFrontend>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RunicBridgeBootstrap)' == 'true'">
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="ReactiveUI" />
+    <ProjectReference Include="../../../runic-sdk/packages/dotnet/Runic.Application.Desktop/Runic.Application.Desktop.csproj" />
+    <ProjectReference Include="../../../runic-sdk/packages/dotnet/Runic.Application.Views.ReactiveUI/Runic.Application.Views.ReactiveUI.csproj" />
+    <ProjectReference Include="../../../runic-sdk/packages/dotnet/Runic.Desktop.Gtk4/Runic.Desktop.Gtk4.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(RunicBridgeBootstrap)' == 'true'"><Compile Remove="Program.cs" /></ItemGroup>
+  <Import Project="../../../runic-sdk/packages/dotnet/Runic.Application.Views/build/Runic.Application.Views.targets" />
+</Project>

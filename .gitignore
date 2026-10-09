@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.direnv/
+.cache/
+coverage/
+*.log
+samples/**/bin/
+samples/**/obj/

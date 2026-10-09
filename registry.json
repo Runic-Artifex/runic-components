@@ -1,0 +1,155 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "runic-components",
+  "homepage": "http://localhost:5190",
+  "items": [
+    {
+      "name": "title-bar",
+      "type": "registry:component",
+      "title": "Title Bar",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/window-host.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-host.tsx"
+        },
+        {
+          "path": "src/components/runic/window-controls.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-controls.tsx"
+        },
+        {
+          "path": "src/components/runic/title-bar.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/title-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "window-controls",
+      "type": "registry:component",
+      "title": "Window Controls",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/window-host.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-host.tsx"
+        },
+        {
+          "path": "src/components/runic/window-controls.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-controls.tsx"
+        }
+      ]
+    },
+    {
+      "name": "document-tabs",
+      "type": "registry:component",
+      "title": "Document Tabs",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/document-tabs.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/document-tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "workspace",
+      "type": "registry:component",
+      "title": "Workspace",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/workspace.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/workspace.tsx"
+        }
+      ]
+    },
+    {
+      "name": "status-bar",
+      "type": "registry:component",
+      "title": "Status Bar",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/status-bar.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/status-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "runic-window-host",
+      "type": "registry:component",
+      "title": "Runic Window Host",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/window-host.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-host.tsx"
+        },
+        {
+          "path": "src/components/runic/runic-window-host.ts",
+          "type": "registry:component",
+          "target": "@components/runic/runic-window-host.ts"
+        }
+      ]
+    },
+    {
+      "name": "runic-shell",
+      "type": "registry:block",
+      "title": "Runic Shell",
+      "description": "Runic application chrome for frameless WebViews.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/runic/window-host.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-host.tsx"
+        },
+        {
+          "path": "src/components/runic/window-controls.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/window-controls.tsx"
+        },
+        {
+          "path": "src/components/runic/title-bar.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/title-bar.tsx"
+        },
+        {
+          "path": "src/components/runic/document-tabs.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/document-tabs.tsx"
+        },
+        {
+          "path": "src/components/runic/workspace.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/workspace.tsx"
+        },
+        {
+          "path": "src/components/runic/status-bar.tsx",
+          "type": "registry:component",
+          "target": "@components/runic/status-bar.tsx"
+        },
+        {
+          "path": "src/components/runic/runic-window-host.ts",
+          "type": "registry:component",
+          "target": "@components/runic/runic-window-host.ts"
+        }
+      ]
+    }
+  ]
+}

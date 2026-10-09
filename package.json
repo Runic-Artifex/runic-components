@@ -1,0 +1,53 @@
+{
+  "name": "runic-components",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.18.0 <25"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5190",
+    "check": "tsc --noEmit",
+    "registry:build": "shadcn build && node scripts/sync-docs.mjs",
+    "build": "npm run check && npm run registry:build && vite build",
+    "test": "vitest run",
+    "preview": "vite preview --host 127.0.0.1 --port 5190",
+    "native:build": "direnv exec ../runic-sdk dotnet build \"$PWD/samples/desktop/RunicComponents.Desktop.csproj\" -c Debug -m:2",
+    "native:run": "direnv exec ../runic-sdk dotnet run --project \"$PWD/samples/desktop/RunicComponents.Desktop.csproj\" -c Debug --no-build",
+    "format": "prettier --write src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md",
+    "format:check": "prettier --check src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource/cormorant": "5.3.0",
+    "@radix-ui/react-dialog": "1.2.0",
+    "@radix-ui/react-slot": "1.4.0",
+    "@runic-artifex/react": "0.7.0-preview.3",
+    "@runic-artifex/views": "0.7.0-preview.3",
+    "@runic-artifex/vite-plugin-runic": "0.7.0-preview.3",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "1.54.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "jsdom": "30.1.2",
+    "prettier": "3.9.9",
+    "shadcn": "4.21.4",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  }
+}

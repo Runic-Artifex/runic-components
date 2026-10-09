@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-bar",
+  "title": "Status Bar",
+  "description": "Runic application chrome for frameless WebViews.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/status-bar.tsx",
+      "content": "import type { ComponentProps } from \"react\";\nimport { cn } from \"@/lib/utils\";\nexport function StatusBar({ className, ...props }: ComponentProps<\"footer\">) {\n  return (\n    <footer\n      aria-label=\"Application status\"\n      className={cn(\n        \"flex h-8 shrink-0 items-center justify-between gap-3 border-t border-border bg-muted/30 px-3 text-[11px] text-muted-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\nexport function StatusBarItem({ className, ...props }: ComponentProps<\"span\">) {\n  return (\n    <span\n      className={cn(\"inline-flex items-center gap-1.5\", className)}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:component",
+      "target": "@components/runic/status-bar.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

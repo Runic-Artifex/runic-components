@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "window-controls",
+  "title": "Window Controls",
+  "description": "Runic application chrome for frameless WebViews.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/window-host.tsx",
+      "content": "\"use client\";\nimport { createContext, useContext, type ReactNode } from \"react\";\nexport type WindowPlatform = \"windows\" | \"macos\" | \"linux\";\nexport interface WindowState {\n  maximized: boolean;\n  focused: boolean;\n}\nexport interface WindowHost {\n  state: WindowState;\n  capabilities: {\n    minimize: boolean;\n    maximize: boolean;\n    close: boolean;\n    move: boolean;\n  };\n  minimize(): void | Promise<void>;\n  toggleMaximize(): void | Promise<void>;\n  close(): void | Promise<void>;\n  startDragging?(): void | Promise<void>;\n}\nconst Context = createContext<{\n  host: WindowHost;\n  onError: (error: unknown) => void;\n} | null>(null);\nexport function WindowHostProvider({\n  host,\n  onError,\n  children,\n}: {\n  host: WindowHost;\n  onError: (error: unknown) => void;\n  children: ReactNode;\n}) {\n  return (\n    <Context.Provider value={{ host, onError }}>{children}</Context.Provider>\n  );\n}\nexport function useWindowHost() {\n  const value = useContext(Context);\n  if (!value) throw new Error(\"Wrap window components in WindowHostProvider.\");\n  return value.host;\n}\nexport function useWindowAction() {\n  const value = useContext(Context);\n  if (!value) throw new Error(\"Wrap window components in WindowHostProvider.\");\n  return (action: () => void | Promise<void>) => {\n    try {\n      Promise.resolve(action()).catch(value.onError);\n    } catch (error) {\n      value.onError(error);\n    }\n  };\n}\n",
+      "type": "registry:component",
+      "target": "@components/runic/window-host.tsx"
+    },
+    {
+      "path": "src/components/runic/window-controls.tsx",
+      "content": "\"use client\";\nimport { Minus, Square, Copy, X } from \"lucide-react\";\nimport type { CSSProperties } from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport {\n  useWindowHost,\n  useWindowAction,\n  type WindowPlatform,\n} from \"./window-host\";\nexport function WindowControls({\n  platform = \"windows\",\n  className,\n}: {\n  platform?: WindowPlatform;\n  className?: string;\n}) {\n  const host = useWindowHost();\n  const run = useWindowAction();\n  const mac = platform === \"macos\";\n  const controls = [\n    {\n      name: \"Minimize window\",\n      icon: Minus,\n      action: () => host.minimize(),\n      enabled: host.capabilities.minimize,\n      color: \"bg-amber-400\",\n    },\n    {\n      name: host.state.maximized ? \"Restore window\" : \"Maximize window\",\n      icon: host.state.maximized ? Copy : Square,\n      action: () => host.toggleMaximize(),\n      enabled: host.capabilities.maximize,\n      color: \"bg-green-500\",\n    },\n    {\n      name: \"Close window\",\n      icon: X,\n      action: () => host.close(),\n      enabled: host.capabilities.close,\n      color: \"bg-red-400\",\n    },\n  ];\n  const ordered = mac ? [controls[2], controls[0], controls[1]] : controls;\n  return (\n    <div\n      data-runic-no-drag\n      style={{ \"--webui-app-region\": \"no-drag\" } as CSSProperties}\n      className={cn(\n        \"flex shrink-0 items-center\",\n        mac && \"gap-2 px-4\",\n        className,\n      )}\n    >\n      {ordered.map(({ name, icon: Icon, action, enabled, color }) => (\n        <button\n          type=\"button\"\n          key={name}\n          aria-label={name}\n          title={name}\n          disabled={!enabled}\n          onClick={() => run(action)}\n          className={cn(\n            \"group grid place-items-center outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:pointer-events-none\",\n            mac\n              ? cn(\n                  \"size-3.5 rounded-full\",\n                  color,\n                  !host.state.focused && \"!bg-muted-foreground\",\n                )\n              : \"h-11 w-11 text-muted-foreground hover:bg-accent\",\n            !mac &&\n              name === \"Close window\" &&\n              \"hover:bg-red-600 hover:text-white\",\n          )}\n        >\n          <Icon\n            aria-hidden\n            className={cn(\n              mac\n                ? \"size-2.5 text-black opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70\"\n                : \"size-3.5\",\n            )}\n          />\n        </button>\n      ))}\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "@components/runic/window-controls.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
