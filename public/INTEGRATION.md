@@ -4,7 +4,8 @@
 
 .NET owns native windows, capabilities, close policy, and application state.
 Runic Views generates typed commands and snapshots from the ViewModel.
-`@runic-artifex/react` owns connection, observation, retry, and client disposal.
+The framework packages `@runic-artifex/react`, `@runic-artifex/svelte`, and
+`@runic-artifex/vue` own connection, observation, retry, and client disposal.
 Runic Components owns rendering and input semantics. No component reaches into
 native handles, host credentials, or private IPC.
 
@@ -14,7 +15,9 @@ ShellViewModel → generated ShellClient → useView → createRunicWindowHost
                                       TitleBar / WindowControls
 ```
 
-`src/NativeApp.tsx` and `samples/desktop` are the complete working integration.
+`src/NativeApp.tsx`, `frameworks/svelte/src/NativeApp.svelte`, and
+`frameworks/vue/src/NativeApp.vue` connect to the same `samples/desktop` host.
+Select it with `--frontend=react|svelte|vue` (React defaults).
 The component registry deliberately has no mandatory Runic runtime dependency;
 its adapter accepts a structural subset of an app-generated Views client.
 Install the React and Views packages matching your .NET SDK release in the app.
@@ -50,6 +53,19 @@ connect function each render. Do not dispose the client in the adapter: `useView
 owns it. Command failures flow to `onError`. While connecting, do not render
 usable window controls. Combine command availability and pending state with the
 native capabilities, rather than assuming every presentation supports every action.
+
+## Svelte and Vue lifecycle
+
+Svelte 5 calls `useView(() => ({ connect: connectShell }))` during initialization.
+Keep the handle intact and derive the host with `$derived`; destructuring its
+reactive getters would capture stale state. Context is created per provider.
+Vue calls `useView({ connect: connectShell })` in setup and reads the returned
+refs inside `computed`. Its provider exposes a reactive host getter. Both use
+the SDK lifecycle cleanup rather than disposing clients in the adapter.
+
+Each port combines native support, generated command availability, and pending
+flags. [Svelte](../frameworks/svelte/README.md) and [Vue](../frameworks/vue/README.md)
+include framework-specific composition examples.
 
 ## Native setup
 
@@ -97,6 +113,11 @@ and these two scripts in `native.html`, before the app module:
 <script src="./runic-desktop-views.js"></script>
 ```
 
+Nested Svelte/Vue native entries use `../webui.js` and
+`../runic-desktop-views.js` to reach host bootstrap assets at the `dist` root.
+Runic serves each surface under a path prefix, so an absolute `/webui.js`
+would miss that surface. Their Vite builds retain those runtime scripts as external HTML scripts.
+
 Runic Desktop serves `webui.js` with its authenticated bootstrap. The Views
 adapter is copied from `Runic.Application.Desktop/www/runic-desktop-views.js`
 into this repository's `public/` directory, then Vite copies it into `dist/`.
@@ -131,3 +152,9 @@ The native GTK4 sample connects and visibly minimizes, maximizes, restores, and
 closes through generated commands. Browser demo appearance was inspected in Zen.
 Windows/macOS native behavior and title-bar drag gestures have not been verified
 in this session. Maximize state is command-tracked pending RC-002.
+
+The Svelte and Vue GTK4 entries were also verified to connect, maximize, restore,
+and close through the same generated Shell commands. Their registry payloads were
+installed with the actual framework CLIs and the installed sources type checked.
+The Vue registry retains Lucide controls in a local icon module because the CLI's
+icon conversion does not preserve dynamic icon references.

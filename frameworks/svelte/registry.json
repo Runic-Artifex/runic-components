@@ -1,0 +1,227 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry.json",
+  "name": "runic-components-svelte",
+  "homepage": "http://localhost:5190/svelte/",
+  "items": [
+    {
+      "name": "title-bar",
+      "type": "registry:component",
+      "title": "Title Bar",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/window-host.ts",
+          "type": "registry:component",
+          "target": "runic/window-host.ts"
+        },
+        {
+          "path": "src/lib/components/runic/WindowHostProvider.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowHostProvider.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/WindowControls.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowControls.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/TitleBar.svelte",
+          "type": "registry:component",
+          "target": "runic/TitleBar.svelte"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "window-controls",
+      "type": "registry:component",
+      "title": "Window Controls",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/window-host.ts",
+          "type": "registry:component",
+          "target": "runic/window-host.ts"
+        },
+        {
+          "path": "src/lib/components/runic/WindowHostProvider.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowHostProvider.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/WindowControls.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowControls.svelte"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "document-tabs",
+      "type": "registry:component",
+      "title": "Document Tabs",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/DocumentTabs.svelte",
+          "type": "registry:component",
+          "target": "runic/DocumentTabs.svelte"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "workspace",
+      "type": "registry:component",
+      "title": "Workspace",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/Workspace.svelte",
+          "type": "registry:component",
+          "target": "runic/Workspace.svelte"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "status-bar",
+      "type": "registry:component",
+      "title": "Status Bar",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/StatusBar.svelte",
+          "type": "registry:component",
+          "target": "runic/StatusBar.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/StatusBarItem.svelte",
+          "type": "registry:component",
+          "target": "runic/StatusBarItem.svelte"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "runic-window-host",
+      "type": "registry:component",
+      "title": "Runic Window Host",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/window-host.ts",
+          "type": "registry:component",
+          "target": "runic/window-host.ts"
+        },
+        {
+          "path": "src/lib/components/runic/WindowHostProvider.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowHostProvider.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/runic-window-host.ts",
+          "type": "registry:component",
+          "target": "runic/runic-window-host.ts"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "runic-shell",
+      "type": "registry:block",
+      "title": "Runic Shell",
+      "description": "Svelte 5 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/svelte@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/lib/components/runic/utils.ts",
+          "type": "registry:component",
+          "target": "runic/utils.ts"
+        },
+        {
+          "path": "src/lib/components/runic/window-host.ts",
+          "type": "registry:component",
+          "target": "runic/window-host.ts"
+        },
+        {
+          "path": "src/lib/components/runic/WindowHostProvider.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowHostProvider.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/WindowControls.svelte",
+          "type": "registry:component",
+          "target": "runic/WindowControls.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/TitleBar.svelte",
+          "type": "registry:component",
+          "target": "runic/TitleBar.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/DocumentTabs.svelte",
+          "type": "registry:component",
+          "target": "runic/DocumentTabs.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/Workspace.svelte",
+          "type": "registry:component",
+          "target": "runic/Workspace.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/StatusBar.svelte",
+          "type": "registry:component",
+          "target": "runic/StatusBar.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/StatusBarItem.svelte",
+          "type": "registry:component",
+          "target": "runic/StatusBarItem.svelte"
+        },
+        {
+          "path": "src/lib/components/runic/runic-window-host.ts",
+          "type": "registry:component",
+          "target": "runic/runic-window-host.ts"
+        }
+      ],
+      "registryDependencies": []
+    }
+  ]
+}

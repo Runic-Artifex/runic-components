@@ -1,0 +1,29 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "status-bar",
+  "title": "status bar",
+  "description": "Vue 3 application chrome for frameless Runic WebViews.",
+  "dependencies": [
+    "@lucide/vue@1.54.0",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/StatusBar.vue",
+      "content": "<template>\n  <footer\n    aria-label=\"Application status\"\n    class=\"flex h-8 shrink-0 items-center justify-between gap-3 border-t border-border bg-muted/30 px-3 text-[11px] text-muted-foreground\"\n  >\n    <slot />\n  </footer>\n</template>\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/StatusBarItem.vue",
+      "content": "<template>\n  <span class=\"inline-flex items-center gap-1.5\"><slot /></span>\n</template>\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

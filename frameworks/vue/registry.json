@@ -1,0 +1,206 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry.json",
+  "name": "runic-components-vue",
+  "homepage": "http://localhost:5190/vue/",
+  "items": [
+    {
+      "name": "title-bar",
+      "type": "registry:component",
+      "title": "title bar",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/utils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/window-host.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowHostProvider.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowControls.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/TitleBar.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/icons.ts",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "window-controls",
+      "type": "registry:component",
+      "title": "window controls",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/utils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/window-host.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowHostProvider.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowControls.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/icons.ts",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "document-tabs",
+      "type": "registry:component",
+      "title": "document tabs",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/utils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/document-tab.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/DocumentTabs.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/icons.ts",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "workspace",
+      "type": "registry:component",
+      "title": "workspace",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/Workspace.vue",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "status-bar",
+      "type": "registry:component",
+      "title": "status bar",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/utils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/StatusBar.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/StatusBarItem.vue",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "runic-window-host",
+      "type": "registry:component",
+      "title": "runic window host",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/window-host.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowHostProvider.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/runic-window-host.ts",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "runic-shell",
+      "type": "registry:block",
+      "title": "runic shell",
+      "description": "Vue 3 application chrome for frameless Runic WebViews.",
+      "dependencies": ["@lucide/vue@1.54.0", "clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "src/components/runic/utils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/window-host.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowHostProvider.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/WindowControls.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/TitleBar.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/document-tab.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/DocumentTabs.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/Workspace.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/StatusBar.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/StatusBarItem.vue",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/runic-window-host.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/runic/icons.ts",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

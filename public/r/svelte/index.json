@@ -1,0 +1,93 @@
+[
+	{
+		"name": "title-bar",
+		"title": "Title Bar",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "title-bar.json"
+	},
+	{
+		"name": "window-controls",
+		"title": "Window Controls",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "window-controls.json"
+	},
+	{
+		"name": "document-tabs",
+		"title": "Document Tabs",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "document-tabs.json"
+	},
+	{
+		"name": "workspace",
+		"title": "Workspace",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "workspace.json"
+	},
+	{
+		"name": "status-bar",
+		"title": "Status Bar",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "status-bar.json"
+	},
+	{
+		"name": "runic-window-host",
+		"title": "Runic Window Host",
+		"type": "registry:component",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "runic-window-host.json"
+	},
+	{
+		"name": "runic-shell",
+		"title": "Runic Shell",
+		"type": "registry:block",
+		"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+		"dependencies": [
+			"@lucide/svelte@1.54.0",
+			"clsx",
+			"tailwind-merge"
+		],
+		"registryDependencies": [],
+		"relativeUrl": "runic-shell.json"
+	}
+]

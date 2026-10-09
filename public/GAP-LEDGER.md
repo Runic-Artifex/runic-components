@@ -174,3 +174,22 @@ verified by UI automation (the available Linux automation cannot drag).
 Windows/macOS remain untested here. The unavailable AT-SPI accessibility bus and
 the local GTK theme warning are host-environment observations, not established
 SDK defects, and are deliberately not listed as Runic gaps.
+
+## Framework expansion verification — 2026-10-09
+
+React, Svelte 5, and Vue 3 share SDK `0.7.0-preview.3`, the generated Shell contract,
+and one .NET host. The Svelte and Vue GTK4 WebViews connected and executed maximize,
+restore, and close. No additional Runic framework-binding gap was reproduced.
+RC-001, RC-002, and RC-005 apply to all three frontends.
+
+The nested native entries require `../webui.js`, relative to their surface URL.
+An absolute `/webui.js` missed the surface-specific server path and produced a
+startup connection timeout. The corrected relative bootstrap was verified in
+both native frontends. Include surface-relative paths in the RC-001 bootstrap
+fix and its integration tests.
+
+Registry CLI constraints are separate from Runic gaps: shadcn-svelte requires
+explicit relative targets to preserve the `runic` directory, and shadcn-vue's
+icon transformer breaks dynamic control references when converting Lucide to
+another icon library. Vue bundles a local icon module to retain its fixed control
+icons. Both actual registry installs passed framework type checks.

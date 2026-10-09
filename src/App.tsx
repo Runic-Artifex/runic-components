@@ -467,6 +467,8 @@ export function App() {
           </span>
         </a>
         <div className="nav-links">
+          <a href="/svelte/">Svelte</a>
+          <a href="/vue/">Vue</a>
           <a href="#playground">Playground</a>
           <a href="#components">
             Components <span>05</span>

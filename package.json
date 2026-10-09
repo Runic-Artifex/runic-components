@@ -8,15 +8,19 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5190",
-    "check": "tsc --noEmit",
-    "registry:build": "shadcn build && node scripts/sync-docs.mjs",
-    "build": "npm run check && npm run registry:build && vite build",
-    "test": "vitest run",
+    "check": "npm run check:react && npm run check --workspaces",
+    "registry:build": "shadcn build && npm run registry:build --workspaces && node scripts/sync-docs.mjs",
+    "build": "npm run check && npm run registry:build && vite build && npm run build --workspaces",
+    "test": "npm run test:react && npm run test --workspaces",
     "preview": "vite preview --host 127.0.0.1 --port 5190",
     "native:build": "direnv exec ../runic-sdk dotnet build \"$PWD/samples/desktop/RunicComponents.Desktop.csproj\" -c Debug -m:2",
     "native:run": "direnv exec ../runic-sdk dotnet run --project \"$PWD/samples/desktop/RunicComponents.Desktop.csproj\" -c Debug --no-build",
-    "format": "prettier --write src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md",
-    "format:check": "prettier --check src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md"
+    "format": "prettier --write src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md frameworks/vue frameworks/svelte --plugin prettier-plugin-svelte",
+    "format:check": "prettier --check src/components src/App.tsx src/NativeApp.tsx src/main.tsx src/native-main.tsx src/NativeApp.test.tsx src/test-setup.ts src/lib src/styles.css vite.config.ts *.json docs/*.md README.md frameworks/vue frameworks/svelte --plugin prettier-plugin-svelte",
+    "dev:svelte": "npm run dev --workspace @runic-components/svelte",
+    "dev:vue": "npm run dev --workspace @runic-components/vue",
+    "check:react": "tsc --noEmit",
+    "test:react": "vitest run"
   },
   "dependencies": {
     "@fontsource-variable/geist": "5.3.0",
@@ -48,6 +52,14 @@
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
     "vite": "8.3.4",
-    "vitest": "5.0.3"
-  }
+    "vitest": "5.0.3",
+    "shadcn-svelte": "1.7.0",
+    "shadcn-vue": "2.8.2",
+    "prettier-plugin-svelte": "4.1.1",
+    "@sveltejs/mcp": "0.1.26"
+  },
+  "workspaces": [
+    "frameworks/svelte",
+    "frameworks/vue"
+  ]
 }

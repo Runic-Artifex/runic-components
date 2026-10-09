@@ -1,0 +1,29 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "runic-window-host",
+  "title": "runic window host",
+  "description": "Vue 3 application chrome for frameless Runic WebViews.",
+  "dependencies": [
+    "@lucide/vue@1.54.0",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/window-host.ts",
+      "content": "import { inject, type InjectionKey } from \"vue\";\nexport type WindowPlatform = \"windows\" | \"macos\" | \"linux\";\nexport interface WindowState {\n  maximized: boolean;\n  focused: boolean;\n}\nexport interface WindowHost {\n  state: WindowState;\n  capabilities: {\n    minimize: boolean;\n    maximize: boolean;\n    close: boolean;\n    move: boolean;\n  };\n  minimize(): void | Promise<void>;\n  toggleMaximize(): void | Promise<void>;\n  close(): void | Promise<void>;\n  startDragging?(): void | Promise<void>;\n}\nexport interface WindowContext {\n  readonly host: WindowHost;\n  run(action: () => void | Promise<void>): void;\n}\nexport const windowContextKey: InjectionKey<WindowContext> =\n  Symbol(\"RunicWindowHost\");\nexport function useWindowContext() {\n  const value = inject(windowContextKey);\n  if (!value) throw new Error(\"Wrap window components in WindowHostProvider.\");\n  return value;\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/WindowHostProvider.vue",
+      "content": "<script setup lang=\"ts\">\nimport { provide } from \"vue\";\nimport { windowContextKey, type WindowHost } from \"./window-host\";\nconst props = defineProps<{\n  host: WindowHost;\n  onError: (error: unknown) => void;\n}>();\nprovide(windowContextKey, {\n  get host() {\n    return props.host;\n  },\n  run(action) {\n    try {\n      Promise.resolve(action()).catch((error) => props.onError(error));\n    } catch (error) {\n      props.onError(error);\n    }\n  },\n});\n</script>\n<template><slot /></template>\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/runic-window-host.ts",
+      "content": "import type { WindowHost, WindowState } from \"./window-host\";\n/** Structural subset of an application-generated Runic Views client. */\nexport interface RunicWindowCommands {\n  minimize(): Promise<unknown>;\n  toggleMaximized(): Promise<unknown>;\n  requestClose(): Promise<unknown>;\n}\nexport interface RunicWindowSnapshot extends WindowState {\n  canMinimize: boolean;\n  canToggleMaximized: boolean;\n  canRequestClose: boolean;\n  canMove: boolean;\n}\n/** Recreate from useView's current snapshot. Commands remain owned by useView. */\nexport function createRunicWindowHost(\n  client: RunicWindowCommands,\n  state: RunicWindowSnapshot,\n): WindowHost {\n  return {\n    state,\n    capabilities: {\n      minimize: state.canMinimize,\n      maximize: state.canToggleMaximized,\n      close: state.canRequestClose,\n      move: state.canMove,\n    },\n    minimize: async () => {\n      await client.minimize();\n    },\n    toggleMaximize: async () => {\n      await client.toggleMaximized();\n    },\n    close: async () => {\n      await client.requestClose();\n    },\n    // Runic Desktop's authenticated bootstrap owns --webui-app-region dragging.\n  };\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

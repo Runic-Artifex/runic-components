@@ -7,6 +7,8 @@ using Runic.Desktop.Gtk4;
 using RunicComponents.Desktop;
 
 var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../.."));
+var frontend = args.FirstOrDefault(arg => arg.StartsWith("--frontend=", StringComparison.Ordinal))?.Split('=', 2)[1] ?? "react";
+var entry = frontend switch { "react" => "native.html", "svelte" => "svelte/native.html", "vue" => "vue/native.html", _ => throw new ArgumentException("Frontend must be react, svelte, or vue.") };
 var useGtk3 = args.Contains("--gtk3", StringComparer.Ordinal);
 var options = useGtk3
     ? new DesktopHostOptions { Linux = new() { EmbeddedBackend = LinuxEmbeddedBackend.Gtk3WebKit41 } }
@@ -29,7 +31,7 @@ return DesktopEventLoop.Run(options, async desktop =>
     ShellViewModel? model = null;
     await using var window = await provider.OpenDesktopWindowAsync<ShellWindow, ShellViewModel>(
         desktop,
-        new DesktopSurfaceOptions { Content = new DesktopContent.Directory(Path.Combine(root, "dist"), "native.html") },
+        new DesktopSurfaceOptions { Content = new DesktopContent.Directory(Path.Combine(root, "dist"), entry) },
         host => { model = host.ViewModel; return new ShellWindow(host); }, windowOptions);
     model!.RefreshCapabilities(!OperatingSystem.IsLinux() || useGtk3);
     Console.WriteLine("RUNIC_COMPONENTS_NATIVE_OPEN");

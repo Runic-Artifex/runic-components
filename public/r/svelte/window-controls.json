@@ -1,0 +1,34 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "window-controls",
+	"title": "Window Controls",
+	"type": "registry:component",
+	"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+	"dependencies": [
+		"@lucide/svelte@1.54.0",
+		"clsx",
+		"tailwind-merge"
+	],
+	"files": [
+		{
+			"content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+			"type": "registry:component",
+			"target": "runic/utils.ts"
+		},
+		{
+			"content": "import { createContext } from \"svelte\";\nexport type WindowPlatform = \"windows\" | \"macos\" | \"linux\";\nexport interface WindowState {\n  maximized: boolean;\n  focused: boolean;\n}\nexport interface WindowHost {\n  state: WindowState;\n  capabilities: {\n    minimize: boolean;\n    maximize: boolean;\n    close: boolean;\n    move: boolean;\n  };\n  minimize(): void | Promise<void>;\n  toggleMaximize(): void | Promise<void>;\n  close(): void | Promise<void>;\n  startDragging?(): void | Promise<void>;\n}\nexport interface WindowContext {\n  readonly host: WindowHost;\n  readonly onError: (error: unknown) => void;\n}\nconst [getContext, setContext] = createContext<WindowContext>();\nexport const setWindowHostContext = setContext;\nexport function useWindowHost() {\n  try {\n    return getContext();\n  } catch {\n    throw new Error(\"Wrap window components in WindowHostProvider.\");\n  }\n}\nexport function useWindowAction() {\n  const context = useWindowHost();\n  return (action: () => void | Promise<void>) => {\n    try {\n      Promise.resolve(action()).catch((error) => context.onError(error));\n    } catch (error) {\n      context.onError(error);\n    }\n  };\n}\n",
+			"type": "registry:component",
+			"target": "runic/window-host.ts"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  import { setWindowHostContext, type WindowHost } from \"./window-host\";\n  let {\n    host,\n    onError,\n    children,\n  }: {\n    host: WindowHost;\n    onError: (error: unknown) => void;\n    children: Snippet;\n  } = $props();\n  setWindowHostContext({\n    get host() {\n      return host;\n    },\n    get onError() {\n      return onError;\n    },\n  });\n</script>\n\n{@render children()}\n",
+			"type": "registry:component",
+			"target": "runic/WindowHostProvider.svelte"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import { Minus, Square, Copy, X } from \"@lucide/svelte\";\n  import { cn } from \"./utils\";\n  import {\n    useWindowHost,\n    useWindowAction,\n    type WindowPlatform,\n  } from \"./window-host\";\n  let {\n    platform = \"windows\",\n    class: className,\n  }: { platform?: WindowPlatform; class?: string } = $props();\n  const context = useWindowHost();\n  const run = useWindowAction();\n  const host = $derived(context.host);\n  const mac = $derived(platform === \"macos\");\n  const controls = $derived([\n    {\n      name: \"Minimize window\",\n      icon: Minus,\n      action: () => host.minimize(),\n      enabled: host.capabilities.minimize,\n      color: \"bg-amber-400\",\n    },\n    {\n      name: host.state.maximized ? \"Restore window\" : \"Maximize window\",\n      icon: host.state.maximized ? Copy : Square,\n      action: () => host.toggleMaximize(),\n      enabled: host.capabilities.maximize,\n      color: \"bg-green-500\",\n    },\n    {\n      name: \"Close window\",\n      icon: X,\n      action: () => host.close(),\n      enabled: host.capabilities.close,\n      color: \"bg-red-400\",\n    },\n  ]);\n  const ordered = $derived(\n    mac ? [controls[2], controls[0], controls[1]] : controls,\n  );\n</script>\n\n<div\n  data-runic-no-drag\n  style:--webui-app-region=\"no-drag\"\n  class={cn(\"flex shrink-0 items-center\", mac && \"gap-2 px-4\", className)}\n>\n  {#each ordered as control (control.name)}\n    <button\n      type=\"button\"\n      aria-label={control.name}\n      title={control.name}\n      disabled={!control.enabled}\n      onclick={() => run(control.action)}\n      class={cn(\n        \"group grid place-items-center outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:pointer-events-none\",\n        mac\n          ? cn(\n              \"size-3.5 rounded-full\",\n              control.color,\n              !host.state.focused && \"!bg-muted-foreground\",\n            )\n          : \"h-11 w-11 text-muted-foreground hover:bg-accent\",\n        !mac &&\n          control.name === \"Close window\" &&\n          \"hover:bg-red-600 hover:text-white\",\n      )}\n    >\n      <control.icon\n        aria-hidden=\"true\"\n        class={cn(\n          mac\n            ? \"size-2.5 text-black opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70\"\n            : \"size-3.5\",\n        )}\n      />\n    </button>\n  {/each}\n</div>\n",
+			"type": "registry:component",
+			"target": "runic/WindowControls.svelte"
+		}
+	]
+}

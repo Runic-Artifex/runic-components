@@ -1,0 +1,28 @@
+{
+  "name": "@runic-components/svelte",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5191",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "build": "npm run check && vite build",
+    "test": "vitest run",
+    "registry:build": "shadcn-svelte registry build -o ../../public/r/svelte"
+  },
+  "dependencies": {
+    "@runic-artifex/svelte": "0.7.0-preview.3",
+    "@runic-artifex/views": "0.7.0-preview.3",
+    "@lucide/svelte": "1.54.0",
+    "clsx": "2.1.1",
+    "svelte": "5.57.2",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@testing-library/svelte": "5.4.2",
+    "@testing-library/user-event": "14.6.7",
+    "svelte-check": "4.7.6",
+    "vitest": "5.0.3"
+  }
+}

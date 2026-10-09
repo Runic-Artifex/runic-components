@@ -1,0 +1,24 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "document-tabs",
+	"title": "Document Tabs",
+	"type": "registry:component",
+	"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+	"dependencies": [
+		"@lucide/svelte@1.54.0",
+		"clsx",
+		"tailwind-merge"
+	],
+	"files": [
+		{
+			"content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+			"type": "registry:component",
+			"target": "runic/utils.ts"
+		},
+		{
+			"content": "<script module lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  export interface DocumentTab {\n    id: string;\n    title: string;\n    dirty?: boolean;\n    icon?: Snippet;\n  }\n</script>\n\n<script lang=\"ts\">\n  import { tick } from \"svelte\";\n  import { X, Plus } from \"@lucide/svelte\";\n  import { cn } from \"./utils\";\n  let {\n    tabs,\n    value,\n    onValueChange,\n    onClose,\n    onAdd,\n    children,\n    class: className,\n  }: {\n    tabs: DocumentTab[];\n    value: string;\n    onValueChange: (id: string) => void;\n    onClose?: (id: string) => void;\n    onAdd?: () => void;\n    children: Snippet;\n    class?: string;\n  } = $props();\n  const prefix = $props.id();\n  const tabId = (id: string) => `${prefix}-tab-${id}`;\n  const panelId = `${prefix}-panel`;\n  async function select(index: number) {\n    const tab = tabs[index];\n    if (tab) {\n      onValueChange(tab.id);\n      await tick();\n      document.getElementById(tabId(tab.id))?.focus();\n    }\n  }\n  function keydown(event: KeyboardEvent, index: number, id: string) {\n    const next =\n      event.key === \"ArrowRight\"\n        ? (index + 1) % tabs.length\n        : event.key === \"ArrowLeft\"\n          ? (index - 1 + tabs.length) % tabs.length\n          : event.key === \"Home\"\n            ? 0\n            : event.key === \"End\"\n              ? tabs.length - 1\n              : null;\n    if (next !== null) {\n      event.preventDefault();\n      void select(next);\n    }\n    if (event.key === \"Delete\" && onClose) {\n      event.preventDefault();\n      onClose(id);\n    }\n  }\n</script>\n\n<div class={cn(\"flex min-h-0 flex-1 flex-col\", className)}>\n  <div class=\"flex shrink-0 items-center border-b border-border bg-muted/20\">\n    <div\n      role=\"tablist\"\n      aria-label=\"Open documents\"\n      class=\"flex min-w-0 flex-1 overflow-x-auto\"\n    >\n      {#each tabs as tab, index (tab.id)}\n        <div\n          class={cn(\n            \"relative flex shrink-0 items-center border-r border-border\",\n            value === tab.id &&\n              \"bg-background after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-primary\",\n          )}\n        >\n          <button\n            type=\"button\"\n            role=\"tab\"\n            id={tabId(tab.id)}\n            aria-controls={panelId}\n            aria-selected={value === tab.id}\n            tabindex={value === tab.id ? 0 : -1}\n            class=\"flex h-10 items-center gap-2 pl-4 pr-2 text-xs outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring\"\n            onclick={() => onValueChange(tab.id)}\n            onkeydown={(event) => keydown(event, index, tab.id)}\n          >\n            {@render tab.icon?.()}<span>{tab.title}</span>\n            {#if tab.dirty}<span\n                class=\"size-1.5 rounded-full bg-primary\"\n                aria-label=\"Unsaved changes\"\n              ></span>{/if}\n          </button>\n          {#if onClose}<button\n              type=\"button\"\n              aria-label={`Close ${tab.title}`}\n              onclick={() => onClose?.(tab.id)}\n              class=\"mr-2 grid size-6 place-items-center rounded text-muted-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring\"\n              ><X aria-hidden=\"true\" class=\"size-3\" /></button\n            >{/if}\n        </div>\n      {/each}\n    </div>\n    {#if onAdd}<button\n        type=\"button\"\n        aria-label=\"New document\"\n        onclick={onAdd}\n        class=\"m-1 grid size-8 shrink-0 place-items-center rounded text-muted-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring\"\n        ><Plus aria-hidden=\"true\" class=\"size-4\" /></button\n      >{/if}\n  </div>\n  <div\n    role=\"tabpanel\"\n    id={panelId}\n    aria-labelledby={tabs.some((tab) => tab.id === value)\n      ? tabId(value)\n      : undefined}\n    aria-label={tabs.length ? undefined : \"No open documents\"}\n    tabindex=\"0\"\n    class=\"min-h-0 flex-1 overflow-auto outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring\"\n  >\n    {@render children()}\n  </div>\n</div>\n",
+			"type": "registry:component",
+			"target": "runic/DocumentTabs.svelte"
+		}
+	]
+}

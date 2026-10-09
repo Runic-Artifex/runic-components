@@ -1,0 +1,29 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "status-bar",
+	"title": "Status Bar",
+	"type": "registry:component",
+	"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+	"dependencies": [
+		"@lucide/svelte@1.54.0",
+		"clsx",
+		"tailwind-merge"
+	],
+	"files": [
+		{
+			"content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+			"type": "registry:component",
+			"target": "runic/utils.ts"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  import type { HTMLAttributes } from \"svelte/elements\";\n  import { cn } from \"./utils\";\n  let {\n    class: className,\n    children,\n    ...props\n  }: HTMLAttributes<HTMLElement> & { children?: Snippet } = $props();\n</script>\n\n<footer\n  aria-label=\"Application status\"\n  class={cn(\n    \"flex h-8 shrink-0 items-center justify-between gap-3 border-t border-border bg-muted/30 px-3 text-[11px] text-muted-foreground\",\n    className,\n  )}\n  {...props}\n>\n  {@render children?.()}\n</footer>\n",
+			"type": "registry:component",
+			"target": "runic/StatusBar.svelte"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  import type { HTMLAttributes } from \"svelte/elements\";\n  import { cn } from \"./utils\";\n  let {\n    class: className,\n    children,\n    ...props\n  }: HTMLAttributes<HTMLSpanElement> & { children?: Snippet } = $props();\n</script>\n\n<span class={cn(\"inline-flex items-center gap-1.5\", className)} {...props}\n  >{@render children?.()}</span\n>\n",
+			"type": "registry:component",
+			"target": "runic/StatusBarItem.svelte"
+		}
+	]
+}

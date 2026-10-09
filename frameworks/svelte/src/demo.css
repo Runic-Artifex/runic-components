@@ -1,0 +1,60 @@
+@import "../../../src/styles.css";
+@source './';
+.demo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 11px;
+  background: var(--background);
+  color: var(--foreground);
+}
+.demo-button:hover {
+  background: var(--accent);
+}
+.demo-button.primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.framework-tag {
+  color: #e99b79;
+}
+.edit-note {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  color: var(--foreground);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 12px;
+  font: 12px/1.7 inherit;
+  margin: 14px 0;
+}
+.inline-dialog {
+  border: 1px solid var(--primary);
+  border-radius: 7px;
+  padding: 16px;
+  background: var(--surface);
+  margin: 12px 0;
+}
+.inline-dialog p {
+  margin: 0 0 12px;
+}
+.install-panel {
+  margin: 35px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+.install-panel pre {
+  overflow: auto;
+  margin: 18px 0;
+  padding: 18px;
+  background: var(--background);
+  color: var(--primary);
+  font-size: 11px;
+}

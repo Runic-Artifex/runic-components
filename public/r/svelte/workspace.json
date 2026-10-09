@@ -1,0 +1,24 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "workspace",
+	"title": "Workspace",
+	"type": "registry:component",
+	"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+	"dependencies": [
+		"@lucide/svelte@1.54.0",
+		"clsx",
+		"tailwind-merge"
+	],
+	"files": [
+		{
+			"content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+			"type": "registry:component",
+			"target": "runic/utils.ts"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  import { cn } from \"./utils\";\n  let {\n    sidebar,\n    children,\n    sidebarLabel = \"Sidebar width\",\n    defaultWidth = 220,\n    minWidth = 160,\n    maxWidth = 360,\n    collapsed = false,\n    class: className,\n  }: {\n    sidebar: Snippet;\n    children: Snippet;\n    sidebarLabel?: string;\n    defaultWidth?: number;\n    minWidth?: number;\n    maxWidth?: number;\n    collapsed?: boolean;\n    class?: string;\n  } = $props();\n  const clamp = (n: number) => Math.min(maxWidth, Math.max(minWidth, n));\n  // Initial width uses the initial default; live bounds are applied below.\n  // svelte-ignore state_referenced_locally\n  let width = $state(clamp(defaultWidth));\n  const boundedWidth = $derived(clamp(width));\n  let start: { x: number; width: number } | undefined;\n  function down(event: PointerEvent) {\n    if (event.button !== 0) return;\n    (event.currentTarget as HTMLDivElement).setPointerCapture(event.pointerId);\n    start = { x: event.clientX, width: boundedWidth };\n  }\n  function up(event: PointerEvent) {\n    start = undefined;\n    const target = event.currentTarget as HTMLDivElement;\n    if (target.hasPointerCapture(event.pointerId))\n      target.releasePointerCapture(event.pointerId);\n  }\n  function keydown(event: KeyboardEvent) {\n    if ([\"ArrowLeft\", \"ArrowRight\", \"Home\", \"End\"].includes(event.key)) {\n      event.preventDefault();\n      width =\n        event.key === \"Home\"\n          ? minWidth\n          : event.key === \"End\"\n            ? maxWidth\n            : clamp(\n                boundedWidth +\n                  (event.key === \"ArrowRight\" ? 1 : -1) *\n                    (event.shiftKey ? 32 : 8),\n              );\n    }\n  }\n</script>\n\n<div class={cn(\"flex min-h-0 flex-1 overflow-hidden\", className)}>\n  {#if !collapsed}\n    <aside\n      style:width={`${boundedWidth}px`}\n      class=\"shrink-0 overflow-auto bg-muted/15\"\n    >\n      {@render sidebar()}\n    </aside>\n    <!-- A focusable separator exposes the adjustable width and supports keyboard resizing. -->\n    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->\n    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->\n    <div\n      role=\"separator\"\n      aria-label={sidebarLabel}\n      aria-orientation=\"vertical\"\n      aria-valuemin={minWidth}\n      aria-valuemax={maxWidth}\n      aria-valuenow={boundedWidth}\n      tabindex=\"0\"\n      class=\"relative z-10 w-1 shrink-0 cursor-col-resize touch-none bg-border outline-none before:absolute before:inset-y-0 before:-left-1 before:w-3 hover:bg-primary focus-visible:bg-primary\"\n      onpointerdown={down}\n      onpointermove={(event) => {\n        if (start) width = clamp(start.width + event.clientX - start.x);\n      }}\n      onpointerup={up}\n      onpointercancel={() => {\n        start = undefined;\n      }}\n      onlostpointercapture={() => {\n        start = undefined;\n      }}\n      ondblclick={() => {\n        width = clamp(defaultWidth);\n      }}\n      onkeydown={keydown}\n    ></div>\n  {/if}\n  <div class=\"flex min-w-0 flex-1 flex-col\">{@render children()}</div>\n</div>\n",
+			"type": "registry:component",
+			"target": "runic/Workspace.svelte"
+		}
+	]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@runic-components/vue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5192",
+    "check": "vue-tsc --noEmit",
+    "build": "vite build",
+    "test": "vitest run",
+    "registry:build": "shadcn-vue build -o ../../public/r/vue"
+  },
+  "dependencies": {
+    "vue": "3.5.43",
+    "@lucide/vue": "1.54.0",
+    "@runic-artifex/vue": "0.7.0-preview.3",
+    "@runic-artifex/views": "0.7.0-preview.3",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.7.0",
+    "reka-ui": "2.11.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.9",
+    "vue-tsc": "3.3.12",
+    "@vue/test-utils": "2.5.1",
+    "@testing-library/vue": "8.1.0",
+    "@testing-library/user-event": "14.6.7",
+    "vite": "8.3.4",
+    "vitest": "5.0.3",
+    "typescript": "6.0.3"
+  }
+}

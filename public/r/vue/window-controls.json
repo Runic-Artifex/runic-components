@@ -1,0 +1,39 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "window-controls",
+  "title": "window controls",
+  "description": "Vue 3 application chrome for frameless Runic WebViews.",
+  "dependencies": [
+    "@lucide/vue@1.54.0",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/window-host.ts",
+      "content": "import { inject, type InjectionKey } from \"vue\";\nexport type WindowPlatform = \"windows\" | \"macos\" | \"linux\";\nexport interface WindowState {\n  maximized: boolean;\n  focused: boolean;\n}\nexport interface WindowHost {\n  state: WindowState;\n  capabilities: {\n    minimize: boolean;\n    maximize: boolean;\n    close: boolean;\n    move: boolean;\n  };\n  minimize(): void | Promise<void>;\n  toggleMaximize(): void | Promise<void>;\n  close(): void | Promise<void>;\n  startDragging?(): void | Promise<void>;\n}\nexport interface WindowContext {\n  readonly host: WindowHost;\n  run(action: () => void | Promise<void>): void;\n}\nexport const windowContextKey: InjectionKey<WindowContext> =\n  Symbol(\"RunicWindowHost\");\nexport function useWindowContext() {\n  const value = inject(windowContextKey);\n  if (!value) throw new Error(\"Wrap window components in WindowHostProvider.\");\n  return value;\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/WindowHostProvider.vue",
+      "content": "<script setup lang=\"ts\">\nimport { provide } from \"vue\";\nimport { windowContextKey, type WindowHost } from \"./window-host\";\nconst props = defineProps<{\n  host: WindowHost;\n  onError: (error: unknown) => void;\n}>();\nprovide(windowContextKey, {\n  get host() {\n    return props.host;\n  },\n  run(action) {\n    try {\n      Promise.resolve(action()).catch((error) => props.onError(error));\n    } catch (error) {\n      props.onError(error);\n    }\n  },\n});\n</script>\n<template><slot /></template>\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/WindowControls.vue",
+      "content": "<script setup lang=\"ts\">\nimport { computed } from \"vue\";\nimport { Minus, Square, Copy, X } from \"./icons\";\nimport { cn } from \"./utils\";\nimport { useWindowContext, type WindowPlatform } from \"./window-host\";\nconst props = withDefaults(defineProps<{ platform?: WindowPlatform }>(), {\n  platform: \"windows\",\n});\nconst context = useWindowContext();\nconst mac = computed(() => props.platform === \"macos\");\nconst controls = computed(() => {\n  const host = context.host;\n  const items = [\n    {\n      name: \"Minimize window\",\n      icon: Minus,\n      action: () => host.minimize(),\n      enabled: host.capabilities.minimize,\n      color: \"bg-amber-400\",\n    },\n    {\n      name: host.state.maximized ? \"Restore window\" : \"Maximize window\",\n      icon: host.state.maximized ? Copy : Square,\n      action: () => host.toggleMaximize(),\n      enabled: host.capabilities.maximize,\n      color: \"bg-green-500\",\n    },\n    {\n      name: \"Close window\",\n      icon: X,\n      action: () => host.close(),\n      enabled: host.capabilities.close,\n      color: \"bg-red-400\",\n    },\n  ];\n  return mac.value ? [items[2], items[0], items[1]] : items;\n});\n</script>\n<template>\n  <div\n    data-runic-no-drag\n    style=\"--webui-app-region: no-drag\"\n    :class=\"cn('flex shrink-0 items-center', mac && 'gap-2 px-4')\"\n  >\n    <button\n      v-for=\"control in controls\"\n      :key=\"control.name\"\n      type=\"button\"\n      :aria-label=\"control.name\"\n      :title=\"control.name\"\n      :disabled=\"!control.enabled\"\n      @click=\"context.run(control.action)\"\n      :class=\"\n        cn(\n          'group grid place-items-center outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:pointer-events-none',\n          mac\n            ? cn(\n                'size-3.5 rounded-full',\n                control.color,\n                !context.host.state.focused && '!bg-muted-foreground',\n              )\n            : 'h-11 w-11 text-muted-foreground hover:bg-accent',\n          !mac &&\n            control.name === 'Close window' &&\n            'hover:bg-red-600 hover:text-white',\n        )\n      \"\n    >\n      <component\n        :is=\"control.icon\"\n        aria-hidden=\"true\"\n        :class=\"\n          cn(\n            mac\n              ? 'size-2.5 text-black opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70'\n              : 'size-3.5',\n          )\n        \"\n      />\n    </button>\n  </div>\n</template>\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/icons.ts",
+      "content": "export { Minus, Square, Copy, X, Plus } from \"@lucide/vue\";\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

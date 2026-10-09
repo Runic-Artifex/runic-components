@@ -1,0 +1,34 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "document-tabs",
+  "title": "document tabs",
+  "description": "Vue 3 application chrome for frameless Runic WebViews.",
+  "dependencies": [
+    "@lucide/vue@1.54.0",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "src/components/runic/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/document-tab.ts",
+      "content": "import type { Component } from \"vue\";\nexport interface DocumentTab {\n  id: string;\n  title: string;\n  dirty?: boolean;\n  icon?: Component;\n}\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/DocumentTabs.vue",
+      "content": "<script setup lang=\"ts\">\nimport { useId, nextTick, type ComponentPublicInstance } from \"vue\";\nimport { X, Plus } from \"./icons\";\nimport type { DocumentTab } from \"./document-tab\";\nimport { cn } from \"./utils\";\nconst props = withDefaults(\n  defineProps<{\n    tabs: DocumentTab[];\n    modelValue: string;\n    closable?: boolean;\n    addable?: boolean;\n  }>(),\n  { closable: true, addable: false },\n);\nconst emit = defineEmits<{\n  \"update:modelValue\": [id: string];\n  close: [id: string];\n  add: [];\n}>();\nconst prefix = useId();\nconst tabId = (id: string) => prefix + \"-tab-\" + id;\nconst panelId = prefix + \"-panel\";\nconst refs = new Map<string, HTMLButtonElement>();\nfunction setRef(id: string, el: Element | ComponentPublicInstance | null) {\n  if (el instanceof HTMLButtonElement) refs.set(id, el);\n  else refs.delete(id);\n}\nasync function select(index: number) {\n  const tab = props.tabs[index];\n  if (tab) {\n    emit(\"update:modelValue\", tab.id);\n    await nextTick();\n    refs.get(tab.id)?.focus();\n  }\n}\nfunction keydown(event: KeyboardEvent, index: number) {\n  const next =\n    event.key === \"ArrowRight\"\n      ? (index + 1) % props.tabs.length\n      : event.key === \"ArrowLeft\"\n        ? (index - 1 + props.tabs.length) % props.tabs.length\n        : event.key === \"Home\"\n          ? 0\n          : event.key === \"End\"\n            ? props.tabs.length - 1\n            : null;\n  if (next !== null) {\n    event.preventDefault();\n    void select(next);\n  }\n  if (event.key === \"Delete\" && props.closable) {\n    event.preventDefault();\n    emit(\"close\", props.tabs[index].id);\n  }\n}\n</script>\n<template>\n  <div class=\"flex min-h-0 flex-1 flex-col\">\n    <div class=\"flex shrink-0 items-center border-b border-border bg-muted/20\">\n      <div\n        role=\"tablist\"\n        aria-label=\"Open documents\"\n        class=\"flex min-w-0 flex-1 overflow-x-auto\"\n      >\n        <div\n          v-for=\"(tab, index) in props.tabs\"\n          :key=\"tab.id\"\n          :class=\"\n            cn(\n              'relative flex shrink-0 items-center border-r border-border',\n              props.modelValue === tab.id &&\n                'bg-background after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-primary',\n            )\n          \"\n        >\n          <button\n            :ref=\"(el) => setRef(tab.id, el)\"\n            type=\"button\"\n            role=\"tab\"\n            :id=\"tabId(tab.id)\"\n            :aria-controls=\"panelId\"\n            :aria-selected=\"props.modelValue === tab.id\"\n            :tabindex=\"props.modelValue === tab.id ? 0 : -1\"\n            class=\"flex h-10 items-center gap-2 pl-4 pr-2 text-xs outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring\"\n            @click=\"emit('update:modelValue', tab.id)\"\n            @keydown=\"keydown($event, index)\"\n          >\n            <component\n              v-if=\"tab.icon\"\n              :is=\"tab.icon\"\n              aria-hidden=\"true\"\n              class=\"size-3\"\n            /><span>{{ tab.title }}</span\n            ><span\n              v-if=\"tab.dirty\"\n              class=\"size-1.5 rounded-full bg-primary\"\n              aria-label=\"Unsaved changes\"\n            /></button\n          ><button\n            v-if=\"props.closable\"\n            type=\"button\"\n            :aria-label=\"'Close ' + tab.title\"\n            @click=\"emit('close', tab.id)\"\n            class=\"mr-2 grid size-6 place-items-center rounded text-muted-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring\"\n          >\n            <X aria-hidden=\"true\" class=\"size-3\" />\n          </button>\n        </div>\n      </div>\n      <button\n        v-if=\"props.addable\"\n        type=\"button\"\n        aria-label=\"New document\"\n        @click=\"emit('add')\"\n        class=\"m-1 grid size-8 shrink-0 place-items-center rounded text-muted-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring\"\n      >\n        <Plus aria-hidden=\"true\" class=\"size-4\" />\n      </button>\n    </div>\n    <div\n      role=\"tabpanel\"\n      :id=\"panelId\"\n      :aria-labelledby=\"\n        props.tabs.some((t) => t.id === props.modelValue)\n          ? tabId(props.modelValue)\n          : undefined\n      \"\n      :aria-label=\"props.tabs.length ? undefined : 'No open documents'\"\n      tabindex=\"0\"\n      class=\"min-h-0 flex-1 overflow-auto outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring\"\n    >\n      <slot />\n    </div>\n  </div>\n</template>\n",
+      "type": "registry:component"
+    },
+    {
+      "path": "src/components/runic/icons.ts",
+      "content": "export { Minus, Square, Copy, X, Plus } from \"@lucide/vue\";\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

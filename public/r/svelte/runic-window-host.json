@@ -1,0 +1,34 @@
+{
+	"$schema": "https://shadcn-svelte.com/schema/registry-item.json",
+	"name": "runic-window-host",
+	"title": "Runic Window Host",
+	"type": "registry:component",
+	"description": "Svelte 5 application chrome for frameless Runic WebViews.",
+	"dependencies": [
+		"@lucide/svelte@1.54.0",
+		"clsx",
+		"tailwind-merge"
+	],
+	"files": [
+		{
+			"content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+			"type": "registry:component",
+			"target": "runic/utils.ts"
+		},
+		{
+			"content": "import { createContext } from \"svelte\";\nexport type WindowPlatform = \"windows\" | \"macos\" | \"linux\";\nexport interface WindowState {\n  maximized: boolean;\n  focused: boolean;\n}\nexport interface WindowHost {\n  state: WindowState;\n  capabilities: {\n    minimize: boolean;\n    maximize: boolean;\n    close: boolean;\n    move: boolean;\n  };\n  minimize(): void | Promise<void>;\n  toggleMaximize(): void | Promise<void>;\n  close(): void | Promise<void>;\n  startDragging?(): void | Promise<void>;\n}\nexport interface WindowContext {\n  readonly host: WindowHost;\n  readonly onError: (error: unknown) => void;\n}\nconst [getContext, setContext] = createContext<WindowContext>();\nexport const setWindowHostContext = setContext;\nexport function useWindowHost() {\n  try {\n    return getContext();\n  } catch {\n    throw new Error(\"Wrap window components in WindowHostProvider.\");\n  }\n}\nexport function useWindowAction() {\n  const context = useWindowHost();\n  return (action: () => void | Promise<void>) => {\n    try {\n      Promise.resolve(action()).catch((error) => context.onError(error));\n    } catch (error) {\n      context.onError(error);\n    }\n  };\n}\n",
+			"type": "registry:component",
+			"target": "runic/window-host.ts"
+		},
+		{
+			"content": "<script lang=\"ts\">\n  import type { Snippet } from \"svelte\";\n  import { setWindowHostContext, type WindowHost } from \"./window-host\";\n  let {\n    host,\n    onError,\n    children,\n  }: {\n    host: WindowHost;\n    onError: (error: unknown) => void;\n    children: Snippet;\n  } = $props();\n  setWindowHostContext({\n    get host() {\n      return host;\n    },\n    get onError() {\n      return onError;\n    },\n  });\n</script>\n\n{@render children()}\n",
+			"type": "registry:component",
+			"target": "runic/WindowHostProvider.svelte"
+		},
+		{
+			"content": "import type { WindowHost, WindowState } from \"./window-host\";\n/** Structural subset of your application-generated Runic Views client. */\nexport interface RunicWindowCommands {\n  minimize(): Promise<unknown>;\n  toggleMaximized(): Promise<unknown>;\n  requestClose(): Promise<unknown>;\n}\nexport interface RunicWindowSnapshot extends WindowState {\n  canMinimize: boolean;\n  canToggleMaximized: boolean;\n  canRequestClose: boolean;\n  canMove: boolean;\n}\n/** Derive a new host from useView's current snapshot. useView owns its client. */\nexport function createRunicWindowHost(\n  client: RunicWindowCommands,\n  state: RunicWindowSnapshot,\n): WindowHost {\n  return {\n    state,\n    capabilities: {\n      minimize: state.canMinimize,\n      maximize: state.canToggleMaximized,\n      close: state.canRequestClose,\n      move: state.canMove,\n    },\n    minimize: async () => {\n      await client.minimize();\n    },\n    toggleMaximize: async () => {\n      await client.toggleMaximized();\n    },\n    close: async () => {\n      await client.requestClose();\n    },\n    // Runic Desktop's authenticated bootstrap owns --webui-app-region dragging.\n  };\n}\n",
+			"type": "registry:component",
+			"target": "runic/runic-window-host.ts"
+		}
+	]
+}
